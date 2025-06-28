@@ -1131,9 +1131,15 @@ class LiteLLMModel(ApiModel):
 
         self._last_input_token_count = response.usage.prompt_tokens
         self._last_output_token_count = response.usage.completion_tokens
-        print(response.choices[0].message.model_dump(include={"role", "content", "tool_calls"}))
+        ax=response.choices[0].message.model_dump(include={"role", "content", "tool_calls"})
+        S=ax['content']
+        try:
+            S = S[:S.find("<thinking>")] + S[S.rfind("</thinking>") + 3:]
+            ax['content'] = S
+        except:
+            pass
         return ChatMessage.from_dict(
-            response.choices[0].message.model_dump(include={"role", "content", "tool_calls"}),
+            ax,
             raw=response,
             token_usage=TokenUsage(
                 input_tokens=response.usage.prompt_tokens,
