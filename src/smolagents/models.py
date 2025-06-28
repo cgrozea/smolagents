@@ -1134,7 +1134,7 @@ class LiteLLMModel(ApiModel):
         ax=response.choices[0].message.model_dump(include={"role", "content", "tool_calls"})
         S=ax['content']
         try:
-            S = S[:S.find("<thinking>")] + S[S.rfind("</thinking>") + 3:]
+            S = S[:S.find("<think>")] + S[S.rfind("</think>") + 5:]
             ax['content'] = S
         except:
             pass
